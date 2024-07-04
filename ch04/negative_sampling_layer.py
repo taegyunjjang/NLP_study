@@ -12,7 +12,7 @@ class EmbeddingDot:
         self.grads = self.embed.grads
         self.cache = None
         
-    def forward(self, h, idx):
+    def forward(self, h, idx):  # h:은닉층 뉴런, idx:단어 id의 배열(미니배치)
         target_W = self.embed.forward(idx)
         out = np.sum(target_W * h, axis=1)
         
@@ -21,7 +21,7 @@ class EmbeddingDot:
     
     def backward(self, dout):
         h, target_W = self.cache
-        dout = dout.reshape(dout.shape[0], 1)
+        dout = dout.reshape(dout.shape[0], 1)  # dout.shape[0]:배치 크기
         
         dtarget_W = dout * h
         self.embed.backward(dtarget_W)
@@ -58,7 +58,7 @@ class UnigramSampler:
         for i in range(batch_size):
             p = self.word_p.copy()
             target_idx = target[i]
-            p[target_idx] = 0
+            p[target_idx] = 0  # 중심 단어 자체는 네거티브 샘플로 선택되지 않도록
             p /= p.sum()
             negative_sample[i, :] = np.random.choice(self.vocab_size, size=self.sample_size, replace=False, p=p)
 
