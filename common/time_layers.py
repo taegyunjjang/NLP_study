@@ -79,6 +79,8 @@ class TimeRNN:
         grads = [0, 0, 0]
         for t in reversed(range(T)):
             layer = self.layers[t]
+            # 다음 시간 단계로부터 전파된 기울기가 현재 시간 단계의 기울기에 더해지므로,
+            # 시간 순서대로 누적된 기울기가 반영됨
             dx, dh = layer.backward(dhs[:, t, :] + dh)
             dxs[:, t, :] = dx
             
