@@ -129,7 +129,7 @@ class LSTM:
         
         tanh_c_next = np.tanh(c_next)
         
-        ds = dc_next + (dh_next * o) * (1 - np.tanh(tanh_c_next)**2)
+        ds = dc_next + (dh_next * o) * (1 - tanh_c_next**2)
         
         dc_prev = ds * f
         
@@ -143,7 +143,7 @@ class LSTM:
         do *= o * (1 - o)
         dg *= (1 - g**2)
         
-        dA = np.hstack(df, dg, di, do)
+        dA = np.hstack((df, dg, di, do))
         
         dWh = np.dot(h_prev.T, dA)
         dWx = np.dot(x.T, dA)
